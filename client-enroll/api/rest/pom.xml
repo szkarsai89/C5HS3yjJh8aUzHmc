@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.wup.bt.challenge</groupId>
+        <artifactId>client-enroll-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>client-enroll-api-rest</artifactId>
+    <name>client-enroll-api-rest</name>
+    <description>Public interface definitions</description>
+    
+    <properties>
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<generated-sources-java-path>main/java</generated-sources-java-path>
+		<generated-sources-package>hu.wup.bt.challenge.restapi.swagger</generated-sources-package>
+	</properties>
+    
+
+    <dependencies>
+        <dependency>
+            <groupId>hu.wup.bt.challenge</groupId>
+            <artifactId>client-enroll-api-def</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>hu.wup.bt.challenge</groupId>
+            <artifactId>client-enroll-api-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+    </dependencies>
+
+    <build>
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>common-api-def-copy</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>hu.wup.bt.challenge</groupId>
+                                    <artifactId>client-enroll-api-def</artifactId>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/schemas</outputDirectory>
+                                    <includes>api-def.yaml</includes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>hu.wup.bt.challenge</groupId>
+                                    <artifactId>client-enroll-api-model</artifactId>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/schemas</outputDirectory>
+                                    <includes>api-model.yaml</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			
+    		<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-openapi-spring-integration-api</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.build.directory}/schemas/api-def.yaml</inputSpec>
+							<configOptions>
+								<sourceFolder>${generated-sources-java-path}</sourceFolder>
+								<dateLibrary>java8-localdatetime</dateLibrary>
+								<java8>true</java8>
+								<interfaceOnly>true</interfaceOnly>
+							</configOptions>
+							<output>${generated-sources-path}</output>
+
+							<generatorName>spring</generatorName>
+							<ignoreFileOverride>${project.basedir}/src/main/resources/.openapi-generator-ignore</ignoreFileOverride>
+							<generateSupportingFiles>true</generateSupportingFiles>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<modelPackage>${generated-sources-package}.model</modelPackage>
+							<apiPackage>${generated-sources-package}.api</apiPackage>
+							<invokerPackage>${generated-sources-package}.invoker</invokerPackage>
+							<importMappings>
+								IdCard=hu.wup.bt.challenge.restapi.swagger.model.IdCard,
+								Message=hu.wup.bt.challenge.restapi.swagger.model.Message,
+								BaseResponse=hu.wup.bt.challenge.restapi.swagger.model.BaseResponse,
+								CheckClientRequest=hu.wup.bt.challenge.restapi.swagger.model.CheckClientRequest,
+								CheckClientResponse=hu.wup.bt.challenge.restapi.swagger.model.CheckClientResponse,
+								EnrollmentRequest=hu.wup.bt.challenge.restapi.swagger.model.EnrollmentRequest,
+								EnrollmentResponse=hu.wup.bt.challenge.restapi.swagger.model.EnrollmentResponse
+							</importMappings>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+    	</plugins>
+    </build>
+</project>

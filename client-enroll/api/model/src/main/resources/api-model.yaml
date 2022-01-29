@@ -1,0 +1,129 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: 1.0.0
+  contact:
+    email: szabolcs.karsai@wup.hu
+servers:
+- url: http://localhost:8090/
+  description: Generated server url
+paths: {}
+components:
+  schemas:
+    Message:
+      description: Base representation of message what is used to send data to clients. 
+      type: object
+      properties:
+        code:
+          type: string
+          description: The resource key of the message it can be used to display own message
+          example: bt.challenge.resourcekey
+        fieldId:
+          type: string
+          description: In case of input fields errors the name of it to be able link message to it on front-end applications
+          example: firstName
+        message:
+          type: string
+          description: The default associated message to code
+          example: Test text in message
+    BaseResponse:
+      description: Base object used as response
+      type: object
+      properties:
+        info:
+          description: List of messages with info severity.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        error:
+          description: List of messages with error severity.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        warn:
+          description: List os messages with warning severity.
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      discriminator:
+        propertyName: type
+    IdCard:
+      description: Hold data are represent an Id Card.
+      type: object
+      properties:
+        number:
+          type: string
+          example: AABBCCDD78
+          description: Unique identifier of IdCard.
+          minLength: 2
+          maxLength: 50
+        expiry:
+          type: string
+          format: date
+          description: The Expiration date of IdCard.
+      required:
+        - number
+        - expiry
+    CheckClientRequest:
+      description: Representation of Customer data are used for check and validate of enrollment possibility.
+      type: object
+      properties:
+        idCardDetails:
+          $ref: '#/components/schemas/IdCard'
+        firstName:
+          type: string
+          description: First name of customer.
+          example: Szabolcs
+          minLength: 2
+          maxLength: 50
+        lastName:
+          type: string
+          description: Last name of customer.
+          example: Karsai
+          minLength: 2
+          maxLength: 50
+        birthDate:
+          description: Birth date of customer.
+          type: string
+          format: date
+      required:
+        - firstName
+        - lastName
+        - birthDate
+        - idCardDetails
+    CheckClientResponse:
+      description: Result of the validation. The three message list has to be checked on client side.
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          additionalProperties: true
+          properties:
+            enrollPossible:
+              description: Flag to indicate base on validation the system enable or not to start enrollment.
+              type: boolean
+            riskLevel:
+              description: Number format of risk level.
+              type: integer
+    EnrollmentRequest:
+      description: Object to use to start or decline enrollment.
+      type: object
+      properties:
+        startEnrollment:
+          description: Flag to indicate the decision of administrator about enrollment.
+          type: boolean
+        declineReason:
+          description: The reason of decline in text format.
+          type: string
+          minLength: 10
+          maxLength: 1000
+    EnrollmentResponse:
+      description: The enrollment result object.
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          additionalProperties: true
+          properties:
+            enrollmentDocument:
+              description: The enrollment document in Base64 string format.
+              type: string
+              format: byte

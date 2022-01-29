@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: 1.0.0
+  contact:
+    email: szabolcs.karsai@wup.hu
+servers:
+- url: http://localhost:8090/
+  description: Generated server url
+paths:
+  /checkenroll:
+    post:
+      tags:
+        - Check
+      summary: Make validation of customer
+      description: Determine the customer has eligbility of enrollment or not. Validate personal informations and check in external systems the existence.
+      operationId: checkenrollment
+      requestBody:
+        description: Personal informations like IdCard details, birthdate and name
+        content:
+          application/json:
+            schema:
+              $ref: 'api-model.yaml#/components/schemas/CheckClientRequest'
+        required: true
+      responses:
+        '200':
+          description: The result of the validation. Possible contains further messages.
+          content:
+            application/json:
+              schema:
+                $ref: 'api-model.yaml#/components/schemas/CheckClientResponse'
+  /enrollment:
+    post:
+      tags:
+        - Enrollment
+      summary: Process the decision of enrollment
+      description: Based on the administrator decision generate the enrollment document or store the decline of it.
+      operationId: enrollment
+      requestBody:
+        description: Contains decision of the administrator. If it is decline the reason has to be filled.
+        content:
+          application/json:
+            schema:
+              $ref: 'api-model.yaml#/components/schemas/CheckClientRequest'
+        required: true
+      responses:
+        '200':
+          description: Contains the generated enrollment document in Base64 string format if decision was start.
+          content:
+            application/json:
+              schema:
+                $ref: 'api-model.yaml#/components/schemas/CheckClientResponse'

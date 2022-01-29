@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.wup.bt.challenge</groupId>
+        <artifactId>client-enroll-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>client-enroll-api-model</artifactId>
+    <name>client-enroll-api-model</name>
+    <description>Public interface definitions</description>
+
+    <properties>
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<generated-sources-java-path>main/java</generated-sources-java-path>
+		<generated-sources-package>hu.wup.bt.challenge.restapi.swagger</generated-sources-package>
+	</properties>
+
+    <dependencies>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+    </dependencies>
+
+    <build>
+    	<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-openapi-spring-integration-api</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/api-model.yaml</inputSpec>
+							<configOptions>
+								<sourceFolder>${generated-sources-java-path}</sourceFolder>
+								<dateLibrary>java8-localdatetime</dateLibrary>
+								<java8>true</java8>
+							</configOptions>
+							<output>${generated-sources-path}</output>
+
+							<generatorName>spring</generatorName>
+							<ignoreFileOverride>${project.basedir}/src/main/resources/.openapi-generator-ignore</ignoreFileOverride>
+							<generateApis>false</generateApis>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<modelPackage>${generated-sources-package}.model</modelPackage>
+							<apiPackage>${generated-sources-package}.api</apiPackage>
+							<invokerPackage>${generated-sources-package}.invoker</invokerPackage>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+    </build>
+</project>

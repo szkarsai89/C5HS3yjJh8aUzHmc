@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>hu.wup.bt.challenge</groupId>
+        <artifactId>client-enroll-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>client-enroll-api-rest-client</artifactId>
+    <name>client-enroll-api-rest-client</name>
+	<description>Rest client generated</description>
+	
+	<properties>
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+	</properties>
+
+	<dependencies>
+		
+	</dependencies>
+
+	<build>
+		<finalName>client-enroll-api-rest-client</finalName>
+		<testResources>
+			<testResource>
+				<directory>src/main/webapp</directory>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>common-api-def-copy</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>hu.wup.bt.challenge</groupId>
+                                    <artifactId>client-enroll-api-def</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/schemas</outputDirectory>
+                                    <includes>api-def.yaml</includes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>hu.wup.bt.challenge</groupId>
+                                    <artifactId>client-enroll-api-model</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/schemas</outputDirectory>
+                                    <includes>api-model.yaml</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-openapi-spring-integration-api</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.build.directory}/schemas/api-def.yaml</inputSpec>
+							<configOptions>
+							</configOptions>
+							<output>${outputDirectory}</output>
+
+							<generatorName>typescript-angular</generatorName>
+							<generateSupportingFiles>true</generateSupportingFiles>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/resources/release-packager.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>install</phase> <!-- append to the packaging phase. -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

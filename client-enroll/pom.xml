@@ -18,7 +18,7 @@
     	<spring-boot-version>2.4.13</spring-boot-version>
     	<lombok-version>1.18.22</lombok-version>
     	<io-swagger-version>1.6.3</io-swagger-version>
-    	<spring-doc-version>1.6.0</spring-doc-version>
+    	<spring-doc-version>1.6.5</spring-doc-version>
     	<openapitools.jackson-databing-nullable.version>0.2.1</openapitools.jackson-databing-nullable.version>
     	<openapi-generator-maven-plugin.version>4.2.2</openapi-generator-maven-plugin.version>
 	</properties>

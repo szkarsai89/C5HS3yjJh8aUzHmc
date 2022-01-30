@@ -1,10 +1,13 @@
 server:
     port: 8090
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
 validation:
     client:
         idcard:
             pattern: ^[A-Z]{6}[0-9]{2}$
         riskcalculator:
-            url: http://localhost:8091/risk
+            url: http://client-enroll-risk-calc-emu:8091/risk
         existence:
-            url: http://localhost:8092/exist
+            url: http://client-enroll-customer-exist-emu:8092/exist

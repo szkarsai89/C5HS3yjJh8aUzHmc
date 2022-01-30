@@ -18,7 +18,9 @@ import hu.wup.bt.challenge.restapi.swagger.model.CheckClientRequest;
 import hu.wup.bt.challenge.restapi.swagger.model.CheckClientResponse;
 import hu.wup.bt.challenge.restapi.swagger.model.IdCard;
 import hu.wup.bt.challenge.restapi.swagger.model.Message;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class CheckEnrollmentEligbilityServiceImpl implements CheckEnrollmentEligbilityService{
 
@@ -54,6 +56,7 @@ public class CheckEnrollmentEligbilityServiceImpl implements CheckEnrollmentElig
 			determineRiskOfCustomer(data, response);
 		} catch(RestClientException rce)
 		{
+			log.info("External system call is failed!", rce);
 			response.addErrorItem(new Message().code("InternalError").message("The eligibility of customer cannot be done. Please try it later."));
 			return response;
 		}

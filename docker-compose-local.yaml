@@ -1,0 +1,28 @@
+version: '3'
+services:
+  client-enroll-app:
+    build: ./client-enroll/app/
+    container_name: client-enroll-app
+    ports:
+      - "8090:8090"
+    networks:
+      - my-shared-network
+
+  customer-exist-emulator-app:
+    build: ./existence-emu/
+    container_name: client-enroll-customer-exist-emu
+    ports:
+      - "8092:8092"
+    networks: 
+      - my-shared-network
+
+  risk-calculator-emulator-app:
+    build: ./risk-emu/
+    container_name: client-enroll-risk-calc-emu
+    ports:
+      - "8091:8091"
+    networks: 
+      - my-shared-network
+
+networks:
+  my-shared-network: {}

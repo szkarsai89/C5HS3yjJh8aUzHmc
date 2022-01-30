@@ -17,7 +17,8 @@ public class RiskCalculatorEmulatorController {
 		if (paramMap.containsKey("idCard"))
 		{
 			try {
-				int risk = Integer.parseInt(paramMap.getFirst("idCard").substring(0, 2));
+				String paramValue = paramMap.getFirst("idCard");
+				int risk = Integer.parseInt(paramValue.substring(paramValue.length()-2));
 				return new ResponseEntity<Integer>(risk, HttpStatus.OK);
 			} catch (Exception ex)
 			{

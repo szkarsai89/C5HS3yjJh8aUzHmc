@@ -3,6 +3,7 @@ package hu.wup.bt.challenge.clientenroll;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -270,9 +271,9 @@ public class WebMockCheckClientControllerTest {
 		request.setIdCardDetails(new IdCard().number("12345678AB").expiry(LocalDate.now().plusYears(2)));
 		
 		String bodyContent = objectMapper.writeValueAsString(request);
-		bodyContent = bodyContent.replace("1992-01-28", "INVALID");
+		String invalidContent = bodyContent.replace(request.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "INVALID");
 		
-		this.mockMvc.perform(post("/client/checkenroll").contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andDo(print())
+		this.mockMvc.perform(post("/client/checkenroll").contentType(MediaType.APPLICATION_JSON).content(invalidContent)).andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.enrollPossible").doesNotExist())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.error").isArray())

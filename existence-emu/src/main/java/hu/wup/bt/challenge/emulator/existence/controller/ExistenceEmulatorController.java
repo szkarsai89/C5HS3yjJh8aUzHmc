@@ -14,7 +14,7 @@ public class ExistenceEmulatorController {
 
 	@PostMapping
 	public ResponseEntity<Boolean> existence(@RequestParam MultiValueMap<String,String> paramMap) {
-		if (paramMap.containsKey("idCard") && paramMap.getFirst("idCard").startsWith("1"))
+		if (paramMap.containsKey("idCard") && paramMap.getFirst("idCard").startsWith("E"))
 		{
 			return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
 		}
